@@ -101,7 +101,7 @@ class KalmanBoxTracker(object):
     Initialises a tracker using initial bounding box.
     """
     #define constant velocity model
-    self.kf = KalmanFilter(dim_x=7, dim_z=4) 
+    self.kf = KalmanFilter(dim_x=7, dim_z=4)
     self.kf.F = np.array([[1,0,0,0,1,0,0],[0,1,0,0,0,1,0],[0,0,1,0,0,0,1],[0,0,0,1,0,0,0],  [0,0,0,0,1,0,0],[0,0,0,0,0,1,0],[0,0,0,0,0,0,1]])
     self.kf.H = np.array([[1,0,0,0,0,0,0],[0,1,0,0,0,0,0],[0,0,1,0,0,0,0],[0,0,0,1,0,0,0]])
 
@@ -120,6 +120,9 @@ class KalmanBoxTracker(object):
     self.hit_streak = 0
     self.age = 0
 
+    self.bbox_score = 1
+    self._save_bbox_score(bbox)
+
   def update(self,bbox):
     """
     Updates the state vector with observed bbox.
@@ -129,6 +132,7 @@ class KalmanBoxTracker(object):
     self.hits += 1
     self.hit_streak += 1
     self.kf.update(convert_bbox_to_z(bbox))
+    self._save_bbox_score(bbox)
 
   def predict(self):
     """
@@ -148,7 +152,13 @@ class KalmanBoxTracker(object):
     """
     Returns the current bounding box estimate.
     """
-    return convert_x_to_bbox(self.kf.x)
+    return convert_x_to_bbox(self.kf.x, score=self.bbox_score)
+
+  def _save_bbox_score(self, bbox):
+    if len(bbox) == 5:
+      self.bbox_score = bbox[4]
+    else:
+      self.bbox_score = 1
 
 
 def associate_detections_to_trackers(detections,trackers,iou_threshold = 0.3):
@@ -250,7 +260,7 @@ class Sort(object):
           self.trackers.pop(i)
     if(len(ret)>0):
       return np.concatenate(ret)
-    return np.empty((0,5))
+    return np.empty((0,6))
 
 def parse_args():
     """Parse input arguments."""
