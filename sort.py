@@ -88,7 +88,7 @@ def convert_x_to_bbox(x,score=None):
   if(score==None):
     return np.array([x[0]-w/2.,x[1]-h/2.,x[0]+w/2.,x[1]+h/2.]).reshape((1,4))
   else:
-    return np.array([x[0]-w/2.,x[1]-h/2.,x[0]+w/2.,x[1]+h/2.,score]).reshape((1,5))
+    return np.array([x[0]-w/2.,x[1]-h/2.,x[0]+w/2.,x[1]+h/2.,[score]]).reshape((1,5))
 
 
 class KalmanBoxTracker(object):
