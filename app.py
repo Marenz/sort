@@ -12,7 +12,7 @@ import glob
 import time
 import argparse
 
-from sort import Sort
+from sort_tracker import Sort
 
 np.random.seed(0)
 

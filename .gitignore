@@ -9,8 +9,10 @@ tmp
 *.mp4
 *.h5
 *.pth
-
+*.egg-info
 
 output/
+dist/
+build/
 mot_benchmark
 
