@@ -86,7 +86,7 @@ Using the [MOT challenge devkit](https://motchallenge.net/devkit/) the method pr
 
 Below is the gist of how to instantiate and update SORT. See the ['__main__'](https://github.com/abewley/sort/blob/master/sort.py#L239) section of [sort.py](https://github.com/abewley/sort/blob/master/sort.py#L239) for a complete example.
     
-    from sort import *
+    from sort_tracker import *
     
     #create instance of SORT
     mot_tracker = Sort() 
